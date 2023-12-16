@@ -1,9 +1,10 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include "Hangman.h"
+#include <string>
+#include "/home/aryan/VisualStudioProjects/Hangman/Headers/Hangman.h"
 
-void printResult(const std::string& word, const std::vector<bool>& indexGuessed, int length);
+void printResult(const std::string& word, const std::vector<bool>& indexGuessed, int length, int& correctGuesses);
 
 int main()
 {
@@ -11,7 +12,7 @@ int main()
 	Hangman hangmanWord; //Object referencing Hangman Class
 	int length = hangmanWord.Length();
 	const std::string& word = hangmanWord.GetWord();
-	std::vector<bool> indexGuessed(length, false);
+	const std::vector<bool>& indices = hangmanWord.GetVectorHavingIndices();
 	char letter;
 	int triesLeft = 5;
 	int correctGuesses = 0;
@@ -31,26 +32,15 @@ int main()
 		std::cin >> letter;
 		
 		//Implementing check
-		std::shared_ptr<std::vector<int>> indexes;
-		indexes = hangmanWord.LetterIndex(letter);
-		if (!indexes -> empty())
-		{
-			//letter present
-			for (int index = 0; index < indexes -> size(); index++)
-			{
-				int position = (*indexes)[index];
-				indexGuessed[position] = true;
-				correctGuesses++;
-			}
-		}
-
-		else
+		//Calling LetterIsPresent() to check if the letter is present and updating indices vector
+		if (!(hangmanWord.LetterIsPresent(letter)))
 		{
 			//letter not present
 			std::cout << "WRONG GUESS!" << std::endl;
 			triesLeft--;
 		}
-		printResult(word, indexGuessed, length);
+		//Printing result
+		printResult(word, indices, length, correctGuesses);
 		if (triesLeft == 0)
 			won = false;
 		else if (correctGuesses == length)
@@ -68,13 +58,15 @@ int main()
 }
 
 //Prints the dashes and the correct letters at appropriate places
-void printResult(const std::string& word, const std::vector<bool>& indexGuessed, int length)
+void printResult(const std::string& word, const std::vector<bool>& indexGuessed, int length, int& correctGuesses)
 {
+	correctGuesses = 0;
 	for (int printIndex = 0; printIndex < length; printIndex++)
 	{
 		if (indexGuessed[printIndex])
 		{
 			std::cout << word[printIndex] << " ";
+			correctGuesses++;
 			continue;
 		}
 		std::cout << "_ ";

@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef IOSTREAM
-	#include <iostream>
+#include <iostream>
 #endif
 
 #ifndef VECTOR
@@ -12,14 +12,19 @@
 #include <memory>
 #endif
 
+#ifndef STRING
+#include <string>
+#endif
+
 class Hangman
 {
 private:
 	std::string m_word;
 	int m_length;
+	std::vector<bool> m_indices;
 public:
 	Hangman()
-		:m_word("aryan"), m_length(m_word.length())
+		:m_word("aryan"), m_length(m_word.length()), m_indices(m_length, false)
 	{}
 
 	//Returns the length of the chosen word
@@ -34,18 +39,23 @@ public:
 		return m_word;
 	}
 
-	//Returns a collection of the indexes_func where the letter occurs, else returns an empty vector
-	std::shared_ptr<std::vector<int>> LetterIndex(const char& letter)
+	const std::vector<bool>& GetVectorHavingIndices()
 	{
-		std::shared_ptr<std::vector<int>> indexes_func = std::make_shared<std::vector<int>>();
+		return m_indices;
+	}
 
+	//Returns a collection of the indexes_func where the letter occurs, else returns an empty vector
+	bool LetterIsPresent(const char& letter)
+	{
+		bool isPresent = false;;
 		for (int index = 0; index < m_length; index++)
 		{
 			if (m_word[index] == letter || m_word[index] + 32 == letter || m_word[index] - 32 == letter)
-				(*indexes_func).push_back(index);
+			{
+				m_indices[index] = true;
+				isPresent = true;
+			}
 		}
-
-		return indexes_func;
+		return isPresent;
 	}
 };
-
