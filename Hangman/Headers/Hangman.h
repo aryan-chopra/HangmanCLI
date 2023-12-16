@@ -28,7 +28,7 @@ public:
 	{}
 
 	//Returns the length of the chosen word
-	int Length() const
+	const int Length() const
 	{
 		return m_length;
 	}
@@ -39,7 +39,7 @@ public:
 		return m_word;
 	}
 
-	const std::vector<bool>& GetVectorHavingIndices()
+	const std::vector<bool>& GetVectorHavingIndices() const
 	{
 		return m_indices;
 	}

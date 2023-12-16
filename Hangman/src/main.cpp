@@ -8,9 +8,9 @@ void printResult(const std::string& word, const std::vector<bool>& indexGuessed,
 
 int main()
 {
-	// Initialozong vars
+	// Initializing vars
 	Hangman hangmanWord; //Object referencing Hangman Class
-	int length = hangmanWord.Length();
+	const int length = hangmanWord.Length();
 	const std::string& word = hangmanWord.GetWord();
 	const std::vector<bool>& indices = hangmanWord.GetVectorHavingIndices();
 	char letter;
@@ -31,7 +31,6 @@ int main()
 		std::cout << "Place your guess:" << std::endl;
 		std::cin >> letter;
 		
-		//Implementing check
 		//Calling LetterIsPresent() to check if the letter is present and updating indices vector
 		if (!(hangmanWord.LetterIsPresent(letter)))
 		{
